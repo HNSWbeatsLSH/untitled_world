@@ -1,0 +1,110 @@
+{
+  "customerId": "acme-bank",
+  "customerName": "Acme Bank Corporation",
+  "deployment": "cloud",
+  "database": {
+    "schema": "acme_bank",
+    "retentionDays": 2555
+  },
+  "modules": {
+    "enabled": [
+      "fraud-detection"
+    ],
+    "config": {
+      "fraud-detection": {
+        "riskThreshold": 0.85,
+        "alertingEnabled": true,
+        "autoBlock": false,
+        "velocityCheckWindow": 3600,
+        "customRules": [
+          "high-value-transfer",
+          "geo-anomaly",
+          "velocity-check"
+        ],
+        "integrations": {
+          "alertingSystem": "pagerduty",
+          "caseManagement": "servicenow"
+        }
+      }
+    }
+  },
+  "branding": {
+    "logo": "customers/acme-bank/assets/logo.png",
+    "favicon": "customers/acme-bank/assets/favicon.ico",
+    "primaryColor": "#1e40af",
+    "secondaryColor": "#dc2626",
+    "companyName": "Acme Bank",
+    "tagline": "Banking with Confidence"
+  },
+  "features": {
+    "authentication": {
+      "method": "sso",
+      "provider": "okta",
+      "mfaRequired": true
+    },
+    "dataRetention": {
+      "entities": 2555,
+      "auditLogs": 2555,
+      "exports": 90
+    },
+    "exportFormats": ["pdf", "excel", "json", "csv"],
+    "notifications": {
+      "email": true,
+      "slack": true,
+      "webhook": true
+    },
+    "compliance": {
+      "gdpr": true,
+      "sox": true,
+      "pci": true
+    }
+  },
+  "customizations": {
+    "backend": {
+      "enabled": true,
+      "path": "customers/acme-bank/backend"
+    },
+    "frontend": {
+      "enabled": true,
+      "path": "customers/acme-bank/frontend"
+    }
+  },
+  "integrations": [
+    {
+      "name": "core-banking",
+      "type": "database",
+      "config": {
+        "host": "${CORE_BANKING_DB_HOST}",
+        "database": "banking_core",
+        "readonly": true
+      }
+    },
+    {
+      "name": "fraud-alerts",
+      "type": "webhook",
+      "config": {
+        "url": "${ALERT_WEBHOOK_URL}",
+        "headers": {
+          "Authorization": "Bearer ${ALERT_API_KEY}"
+        }
+      }
+    }
+  ],
+  "limits": {
+    "maxEntities": 10000000,
+    "maxRelationships": 50000000,
+    "maxConcurrentUsers": 100,
+    "apiRateLimit": 1000
+  },
+  "support": {
+    "tier": "enterprise",
+    "contacts": [
+      {
+        "name": "John Smith",
+        "role": "Technical Lead",
+        "email": "john.smith@acmebank.com",
+        "phone": "+1-555-0100"
+      }
+    ]
+  }
+}

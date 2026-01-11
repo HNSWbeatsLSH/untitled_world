@@ -1,0 +1,52 @@
+{
+  "name": "fraud-detection",
+  "version": "1.0.0",
+  "displayName": "Fraud Detection",
+  "description": "Advanced fraud detection and pattern analysis module",
+  "author": "Platform Team",
+  "type": "standard",
+  "dependencies": {
+    "core": ">=0.1.0",
+    "modules": []
+  },
+  "backend": {
+    "enabled": true,
+    "apiPrefix": "/api/v1/fraud",
+    "models": ["backend/models.py"],
+    "routes": ["backend/api.py"]
+  },
+  "frontend": {
+    "enabled": true,
+    "routes": [
+      {
+        "path": "/fraud-detection",
+        "component": "FraudDashboard"
+      },
+      {
+        "path": "/fraud-detection/alerts",
+        "component": "FraudAlerts"
+      }
+    ],
+    "menuItems": [
+      {
+        "label": "Fraud Detection",
+        "icon": "shield-alert",
+        "path": "/fraud-detection",
+        "order": 10
+      }
+    ]
+  },
+  "permissions": [
+    "fraud.view",
+    "fraud.investigate",
+    "fraud.manage",
+    "fraud.alerts.view",
+    "fraud.alerts.create"
+  ],
+  "config": {
+    "riskThreshold": 0.7,
+    "alertingEnabled": true,
+    "autoBlock": false,
+    "velocityCheckWindow": 3600
+  }
+}
