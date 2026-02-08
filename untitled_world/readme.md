@@ -21,18 +21,30 @@ Perfect for: fraud detection, intelligence analysis, knowledge graphs, network a
 
 ## Quick Start
 
-```bash
-# Clone or navigate to the project
-cd untitled_world
+### Option 1: With Docker (Recommended)
 
-# Start the entire platform with one command
+```bash
+cd untitled_world
 ./start.sh
 
-# Access the platform
-# Frontend: http://localhost:3000
-# Backend:  http://localhost:8000
-# API Docs: http://localhost:8000/docs
+# Access at http://localhost:3000
 ```
+
+### Option 2: Without Docker (Manual)
+
+```bash
+cd untitled_world
+./start-manual.sh
+
+# Access at http://localhost:3000
+```
+
+**Prerequisites for manual setup:**
+- Python 3.11+
+- Node.js 18+
+- PostgreSQL 15+ (or use SQLite for testing)
+
+See **[MANUAL_SETUP.md](MANUAL_SETUP.md)** for detailed instructions.
 
 That's it! The platform will start with sample data ready to explore.
 

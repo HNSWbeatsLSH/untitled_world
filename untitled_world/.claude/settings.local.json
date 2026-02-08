@@ -1,7 +1,20 @@
 {
   "permissions": {
     "allow": [
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(./start-manual.sh)",
+      "Bash(python:*)",
+      "Bash(sqlite3:*)",
+      "Bash(./stop-servers.sh:*)",
+      "Bash(source:*)",
+      "Bash(ls:*)",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(if [ -f investigation_platform.db ])",
+      "Bash(then sqlite3 investigation_platform.db \"SELECT name FROM sqlite_master WHERE type=''table'' ORDER BY name;\")",
+      "Bash(else echo \"Database doesn''t exist in project root\")",
+      "Bash(fi)",
+      "Bash(find:*)"
     ]
   }
 }

@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from app.core.database import SessionLocal, engine, Base
 from app.models.ontology import EntityType, Entity, RelationshipType, Relationship
+from models import Base, Process
 
 def seed_data():
     """Seed the database with sample data."""
@@ -318,6 +319,14 @@ def seed_data():
     finally:
         db.close()
 
+def seed_machine_supervisors():
+    """Seed Machine Supervisors sample data"""
+    print("Seeding Machine Supervisors sample data...")
+    
+    # Create tables first
+    Base.metadata.create_all(bind=engine)
+    
+    print("Creating sample data for Machine Supervisors module...")
 
 if __name__ == "__main__":
     seed_data()

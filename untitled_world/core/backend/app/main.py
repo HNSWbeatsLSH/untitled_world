@@ -8,6 +8,7 @@ from .core.config import settings
 from .core.database import engine, Base
 from .core.module_loader import module_loader
 from .api.v1 import api_router
+from .api.ontology_showcase import router as ontology_showcase_router
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -31,6 +32,7 @@ app.add_middleware(
 
 # Include core API routes
 app.include_router(api_router, prefix=settings.API_V1_PREFIX)
+app.include_router(ontology_showcase_router, prefix=settings.API_V1_PREFIX)
 
 # Load and register modules
 def load_modules():

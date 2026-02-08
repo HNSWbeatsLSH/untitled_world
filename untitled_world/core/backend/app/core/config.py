@@ -3,6 +3,7 @@ Core configuration for the Data Investigation Platform.
 """
 from pydantic_settings import BaseSettings
 from typing import Optional
+import os
 
 
 class Settings(BaseSettings):
@@ -13,8 +14,8 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "Data Investigation Platform"
     VERSION: str = "0.1.0"
 
-    # Database
-    DATABASE_URL: str = "postgresql://localhost/investigation_platform"
+    # Database - defaults to SQLite for easy testing
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./investigation_platform.db")
 
     # Security
     SECRET_KEY: str = "your-secret-key-change-this-in-production"

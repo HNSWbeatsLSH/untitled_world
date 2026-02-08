@@ -97,36 +97,46 @@ class ModuleLoader:
         if not module_path.exists():
             return
 
-        # Add module path to sys.path for imports
-        sys.path.insert(0, str(module_path.parent))
-
         try:
-            # Import API routes
+            # Import API routes using file path (works with hyphenated module names)
             routes = metadata.backend.get('routes', [])
             for route_file in routes:
-                module_import = f"{module_name}.backend.api"
-                api_module = importlib.import_module(module_import)
+                # Use spec_from_file_location to handle module names with hyphens
+                api_file_path = module_path / "api.py"
+                if api_file_path.exists():
+                    spec = importlib.util.spec_from_file_location(
+                        f"{module_name}_api",
+                        api_file_path
+                    )
+                    api_module = importlib.util.module_from_spec(spec)
+                    sys.modules[f"{module_name}_api"] = api_module
+                    spec.loader.exec_module(api_module)
 
-                if hasattr(api_module, 'router'):
-                    api_prefix = metadata.backend.get('apiPrefix', f'/api/v1/{module_name}')
-                    self.module_routers[module_name] = {
-                        'router': api_module.router,
-                        'prefix': api_prefix,
-                        'tags': [metadata.display_name]
-                    }
+                    if hasattr(api_module, 'router'):
+                        api_prefix = metadata.backend.get('apiPrefix', f'/api/v1/{module_name}')
+                        self.module_routers[module_name] = {
+                            'router': api_module.router,
+                            'prefix': api_prefix,
+                            'tags': [metadata.display_name]
+                        }
 
             # Import models (they will auto-register with SQLAlchemy)
             models = metadata.backend.get('models', [])
             for model_file in models:
-                module_import = f"{module_name}.backend.models"
-                importlib.import_module(module_import)
+                models_file_path = module_path / "models.py"
+                if models_file_path.exists():
+                    spec = importlib.util.spec_from_file_location(
+                        f"{module_name}_models",
+                        models_file_path
+                    )
+                    models_mod = importlib.util.module_from_spec(spec)
+                    sys.modules[f"{module_name}_models"] = models_mod
+                    spec.loader.exec_module(models_mod)
 
-        except ImportError as e:
+        except Exception as e:
             print(f"Error importing module {module_name}: {e}")
-        finally:
-            # Remove from sys.path
-            if str(module_path.parent) in sys.path:
-                sys.path.remove(str(module_path.parent))
+            import traceback
+            traceback.print_exc()
 
     def load_customer_config(self, customer_id: str) -> Optional[Dict[str, Any]]:
         """Load customer configuration."""
@@ -182,4 +192,9 @@ class ModuleLoader:
 
 
 # Global module loader instance
-module_loader = ModuleLoader()
+# Use absolute paths to find modules directory at project root
+_project_root = Path(__file__).parent.parent.parent.parent.parent
+module_loader = ModuleLoader(
+    modules_dir=str(_project_root / "modules"),
+    customers_dir=str(_project_root / "customers")
+)

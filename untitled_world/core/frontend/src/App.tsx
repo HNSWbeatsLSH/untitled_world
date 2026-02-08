@@ -6,7 +6,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 import Dashboard from './pages/Dashboard';
 import GraphExplorer from './pages/GraphExplorer';
-import { LayoutDashboard, Network, Database, Settings } from 'lucide-react';
+import OntologyShowcase from './pages/OntologyShowcase';
+import { LayoutDashboard, Network, Database, Settings, Cpu, Map, Brain } from 'lucide-react';
+
+// Import machine supervisors module components
+import MachinesDashboard from '../../../modules/machine-supervisors/frontend/pages/MachinesDashboard';
+import MachineDetail from '../../../modules/machine-supervisors/frontend/pages/MachineDetail';
+import FactoryFloorView from '../../../modules/machine-supervisors/frontend/pages/FactoryFloorView';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,6 +35,12 @@ function App() {
               <Route path="/graph" element={<GraphExplorer />} />
               <Route path="/entities" element={<div className="p-6">Entities (Coming Soon)</div>} />
               <Route path="/schema" element={<div className="p-6">Schema Management (Coming Soon)</div>} />
+              <Route path="/ontology-showcase" element={<OntologyShowcase />} />
+
+              {/* Machine Supervisors Module Routes */}
+              <Route path="/machines" element={<MachinesDashboard />} />
+              <Route path="/machines/:id" element={<MachineDetail />} />
+              <Route path="/factory-floor" element={<FactoryFloorView />} />
             </Routes>
           </main>
         </div>
@@ -43,9 +55,12 @@ const Sidebar = () => {
 
   const navItems = [
     { path: '/', label: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
+    { path: '/ontology-showcase', label: 'Ontology Showcase', icon: <Brain className="w-5 h-5" /> },
     { path: '/graph', label: 'Graph Explorer', icon: <Network className="w-5 h-5" /> },
     { path: '/entities', label: 'Entities', icon: <Database className="w-5 h-5" /> },
     { path: '/schema', label: 'Schema', icon: <Settings className="w-5 h-5" /> },
+    { path: '/machines', label: 'Machines', icon: <Cpu className="w-5 h-5" /> },
+    { path: '/factory-floor', label: 'Factory Floor', icon: <Map className="w-5 h-5" /> },
   ];
 
   return (
